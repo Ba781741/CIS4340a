@@ -1,7 +1,14 @@
 public static String readBytes(InputStream in) throws IOException {
+  int offset = 0;
+  int bytesRead = 0;
   byte[] data = new byte[1024];
-  if (in.read(data) == -1) {
-    throw new EOFException();
+  while ((bytesRead = in.read(data, offset, data.length - offset))
+    != -1) {
+    offset += bytesRead;
+    if (offset >= data.length) {
+      break;
+    }
   }
-  return new String(data, "UTF-8");
+  String str = new String(data, 0, offset, "UTF-8");
+  return str;
 }
